@@ -22,6 +22,12 @@ def change_colors():
     food_color = choice(colors)
     
     ontimer(change_colors, 1000)
+def move_food():
+    """Mover comirda"""
+    food.x += 10 
+    if food.x > 190: 
+        food.x = -190  
+    ontimer(move_food, 500)  
 
 
 def change(x, y):
@@ -48,13 +54,14 @@ def move():
     snake.append(head)
 
     if head == food:
-        
         print('Snake:', len(snake))
         food.x = randrange(-15, 15) * 10
         food.y = randrange(-15, 15) * 10
-        
-    
-    
+    else:
+        snake.pop(0)
+
+    clear()
+
     for body in snake:
         square(body.x, body.y, 9, snake_color)
 
@@ -73,5 +80,6 @@ onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
 move()
+move_food()
 change_colors()
 done()
