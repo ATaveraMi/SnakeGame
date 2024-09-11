@@ -1,21 +1,27 @@
-"""Snake, classic arcade game.
-
-Exercises
-
-1. How do you make the snake faster or slower?
-2. How can you make the snake go around the edges?
-3. How would you move the food?
-4. Change the snake to respond to mouse clicks.
-"""
-
-from random import randrange
+from random import randrange, choice
 from turtle import *
 
 from freegames import square, vector
 
+# Colores nuevos
+colors = ['blue', 'green', 'yellow', 'purple', 'pink', 'orange', 'black', 'brown', 'cyan', 'magenta']
+
+# Color para la serpiente y color para la comida
+snake_color = choice(colors)
+food_color = choice(colors)
+
 food = vector(0, 0)
 snake = [vector(10, 0)]
 aim = vector(0, -10)
+
+def change_colors():
+    """Cambiar los colores de la serpiente y la comida cada 5 segundos (el tiempo se puede cambiar a lo que quiera el usuario)"""
+    global snake_color, food_color
+
+    snake_color = choice(colors)
+    food_color = choice(colors)
+    
+    ontimer(change_colors, 1000)
 
 
 def change(x, y):
@@ -35,7 +41,7 @@ def move():
     head.move(aim)
 
     if not inside(head) or head in snake:
-        square(head.x, head.y, 9, 'red')
+        square(head.x, head.y, 9, 'red')  
         update()
         return
 
@@ -51,9 +57,10 @@ def move():
     clear()
 
     for body in snake:
-        square(body.x, body.y, 9, 'black')
+        square(body.x, body.y, 9, snake_color)
 
-    square(food.x, food.y, 9, 'green')
+    square(food.x, food.y, 9, food_color)
+
     update()
     ontimer(move, 100)
 
@@ -67,4 +74,5 @@ onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
 move()
+change_colors()
 done()
